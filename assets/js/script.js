@@ -1,9 +1,27 @@
-setTimeout(function () {
-    const image = document.getElementById('main-image');
-    const overlay = document.querySelector('.color-overlay');
-    if (image && overlay) {
-      overlay.style.height = `${image.offsetHeight}px`;
-    } else {
-      console.error('Image or overlay element not found');
+window.addEventListener("load", event => {
+  var image = document.querySelector('img');
+  var overlay = document.querySelector('.color-overlay');
+
+  function createOverlay() {
+    if (!overlay) {
+      let main = document.querySelector('main');
+      overlay = document.createElement('div');
+      main.prepend(overlay);
+      overlay.classList.add("color-overlay");
     }
-  }, 200);
+    updateOverlayHeight();
+  }
+
+  function updateOverlayHeight() {
+    if (!overlay) return;
+    overlay.style.height = `${image.offsetHeight}px`;
+  }
+
+  image.addEventListener('load', createOverlay);
+
+  if (image.complete) {
+    createOverlay();
+  }
+
+  window.addEventListener('resize', createOverlay);
+});
